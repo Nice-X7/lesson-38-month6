@@ -1,34 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { data } from "./actions";
 
 export const App = () => {
-  const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+
+  const todo = useSelector(state => state)
+  const dispatch = useDispatch()
+
+
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/todos")
-      .then((response) => {
-        return response.json()
-      }).then((json) => {
-        setData(json)
-        setLoading(false)
-      })
-      .catch(e => console.error(e))
+    dispatch(data())
   }, [])
-
 
   return (
     <div className="App">
       <h1>Набор данных</h1>
       <div className="content">
-        {
-          loading ? "Идет загрузка данных..." : data.map(element => {
-            return (
-              <div className="data">
-                {element.completed ? <span>{element.title}</span> : ""}
-              </div>
-            )
-          })
-        }
+        {todo.map((item) => {
+          return (
+            <>
+              {item.title}
+            </>
+          )
+        })}
       </div>
     </div>
   );
