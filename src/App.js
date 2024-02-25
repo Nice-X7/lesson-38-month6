@@ -4,7 +4,8 @@ import { data } from "./actions";
 
 export const App = () => {
 
-  const todo = useSelector(state => state)
+  const todo = useSelector(state => state.todos)
+  const load = useSelector(state => state.loading)
   const dispatch = useDispatch()
 
 
@@ -17,13 +18,14 @@ export const App = () => {
     <div className="App">
       <h1>Набор данных</h1>
       <div className="content">
-        {todo.map((item) => {
-          return (
-            <>
-              {item.title}
-            </>
-          )
-        })}
+        {load ? "Подождите, идет загрузка данных..." :
+          todo.map((item) => {
+            return (
+              <>
+                {item.title}
+              </>
+            )
+          })}
       </div>
     </div>
   );
