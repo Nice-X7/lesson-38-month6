@@ -6,40 +6,50 @@ import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { thunk } from 'redux-thunk';
 
-const initializate = {
-  todos: [
-    {
-      "userId": 1,
-      "id": 1,
-      "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-    },
-    {
-      "userId": 1,
-      "id": 2,
-      "title": "qui est esse",
-    },
-    {
-      "userId": 1,
-      "id": 3,
-      "title": "ea molestias quasi exercitationem repellat qui ipsa sit aut",
-    },
-  ],
+const initialization = {
+  todos: [],
   loading: false
 }
 
-const reducer = (state = initializate, action) => {
+const reducer = (state = initialization, action) => {
   switch (action.type) {
     case "loading/data":
       return {
-        ...state,
         loading: true
       }
 
     case "todos/data":
       return {
-        ...state,
         todos: action.payload,
         loading: false
+      }
+
+    case "delete/todo/start":
+      return {
+        ...state,
+        loading: true,
+      }
+
+    case "delete/todo":
+      return {
+        ...state,
+        loading: false,
+        todos: state.todos.filter(todo => todo.id !== action.payload)
+      }
+
+    case "check/click/finished":
+      return {
+        ...state,
+        todos: state.todos.map((item) => {
+          if (item.id === action.payload) {
+            return {
+              ...item,
+              completed: !item.completed
+            }
+          }
+
+          return item
+        })
       }
 
     default:
