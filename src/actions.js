@@ -15,9 +15,15 @@ export const data = () => {
 
 export const removeTodo = (id) => {
     return dispatch => {
-        dispatch({ type: "delete/todo/start" })
+        dispatch(
+            {
+                type: "delete/todo/start", payload: id
+            }
+        )
 
-        fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
+        fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+            method: "DELETE"
+        })
             .then((response) => response.json())
             .then(() => {
                 dispatch({
@@ -30,7 +36,7 @@ export const removeTodo = (id) => {
 
 export const checkBox = (id, completed) => {
     return dispatch => {
-        dispatch({ type: "check/click/start" })
+        dispatch({ type: "check/click/start", payload: id })
 
         fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
             method: "PATCH",

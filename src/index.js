@@ -24,17 +24,41 @@ const reducer = (state = initialization, action) => {
         loading: false
       }
 
-    case "delete/todo/start":
-      return {
-        ...state,
-        loading: true,
-      }
-
     case "delete/todo":
       return {
         ...state,
         loading: false,
         todos: state.todos.filter(todo => todo.id !== action.payload)
+      }
+
+    case "delete/todo/start":
+      return {
+        ...state,
+        todos: state.todos.map((todo) => {
+          if (todo.id === action.payload) {
+            return {
+              ...todo,
+              deleting: true
+            }
+          }
+
+          return todo;
+        })
+      }
+
+    case "check/click/start":
+      return {
+        ...state,
+        todos: state.todos.map((todo) => {
+          if (todo.id === action.payload) {
+            return {
+              ...todo,
+              checking: true
+            }
+          }
+
+          return todo;
+        })
       }
 
     case "check/click/finished":
@@ -44,7 +68,8 @@ const reducer = (state = initialization, action) => {
           if (item.id === action.payload) {
             return {
               ...item,
-              completed: !item.completed
+              completed: !item.completed,
+              checking: false
             }
           }
 
